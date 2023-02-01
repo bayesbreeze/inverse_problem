@@ -247,6 +247,9 @@ def evaluate(config,
   test_imgs = np.load(test_data_dir)['all_imgs']
   test_imgs = test_imgs.reshape((jax.process_count(), -1, *test_imgs.shape[1:]))[jax.process_index()]
 
+  #<<=== @@@@@@ evaluation images @@@@@===============
+  test_imgs = test_imgs[:32, ...]    #<<=== evaluation images ===============
+
   if 'mar' in config.sampling.task:
     mar = True
     mar_data_dir = {

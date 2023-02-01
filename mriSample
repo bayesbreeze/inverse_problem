@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --partition=vgpu
+#SBATCH --gres=gpu:1
+
+conda activate score
+
+ROOT_DIR="/home/Student/s4623598/sunlab/WeiJiang/inverse_problem"
+cd $ROOT_DIR
+
+python -m main --config $ROOT_DIR/configs/ve/brats_ncsnpp_ald_projection.py --eval_folder 'eval' --mode eval --workdir working
+
+
+# python -m main --config $ROOT_DIR/configs/ddpm/brats.py --eval_folder 'eval' --mode eval --workdir working
+
+
+
+

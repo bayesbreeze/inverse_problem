@@ -23,14 +23,16 @@ def get_config():
   config = get_default_configs()
   # training
   training = config.training
-  training.batch_size = 64
+  # training.batch_size = 64
+  training.batch_size = 4
   training.n_iters = 2400001
   training.snapshot_sampling = True
   training.sde = 'vesde'
   training.continuous = True
   # eval
   evaluate = config.eval
-  evaluate.batch_size = 128
+  # evaluate.batch_size = 128
+  evaluate.batch_size = 32
   evaluate.num_samples = 50000
   evaluate.ckpt_id = 26
   # sampling
