@@ -50,6 +50,7 @@ import piq
 import torch
 import torchvision.transforms as transforms
 import shutil
+import flax.linen as nn
 
 FLAGS = flags.FLAGS
 
@@ -302,6 +303,12 @@ def evaluate(config,
 
   cs_solver = cs.get_cs_solver(config, sde, score_model, sampling_shape, inverse_scaler, eps=sampling_eps)
   state = checkpoints.restore_checkpoint(checkpoint_dir, state, step=config.eval.ckpt_id)
+  param_changed = jax.tree_map(lambda s, i: s.reshape(*i.shape), state.params_ema, initial_params)
+  state = mutils.State(step=state.step, optimizer=state.optimizer, lr=state.lr,
+                      model_state=state.model_state,
+                      ema_rate=state.ema_rate,
+                      params_ema=param_changed,
+                      rng=state.rng)  # pytype: disable=wrong-keyword-args
   pstate = flax.jax_utils.replicate(state)
 
   hyper_params = {

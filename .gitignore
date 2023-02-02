@@ -1,2 +1,4 @@
-working/*
-test_data/*
+__pycache__/
+working/
+test_data/
+.vscode/

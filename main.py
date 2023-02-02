@@ -1,3 +1,4 @@
+# exec(open("main.py").read())
 # coding=utf-8
 # Copyright 2020 The Google Research Authors.
 #
@@ -26,9 +27,9 @@ import os
 FLAGS = flags.FLAGS
 
 config_flags.DEFINE_config_file(
-  "config", None, "Training configuration.", lock_config=True)
-flags.DEFINE_string("workdir", None, "Work directory.")
-flags.DEFINE_enum("mode", None, ["train", "eval", "tune"], "Running mode: train, eval, or tune")
+  "config", "configs/ve/brats_ncsnpp_baseline.py", "Training configuration.", lock_config=True)
+flags.DEFINE_string("workdir", "working", "Work directory.")
+flags.DEFINE_enum("mode", "eval", ["train", "eval", "tune"], "Running mode: train, eval, or tune")
 flags.DEFINE_string("eval_folder", "eval",
                     "The folder name for storing evaluation results")
 flags.mark_flags_as_required(["workdir", "config", "mode"])
@@ -55,11 +56,13 @@ def main(argv):
   elif FLAGS.mode == "eval":
     # Run the evaluation pipeline
     run_lib.evaluate(FLAGS.config, FLAGS.workdir, FLAGS.eval_folder)
+    pass
   elif FLAGS.mode == "tune":
     run_lib.hyperparam_search(FLAGS.config, FLAGS.workdir, FLAGS.eval_folder)
   else:
     raise ValueError(f"Mode {FLAGS.mode} not recognized.")
 
+# config, workdir, eval_folder=FLAGS.config, FLAGS.workdir, FLAGS.eval_folder
 
 if __name__ == "__main__":
   app.run(main)
